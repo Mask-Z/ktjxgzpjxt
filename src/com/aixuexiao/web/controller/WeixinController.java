@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.aixuexiao.service.ImageMessageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -70,6 +71,8 @@ public class WeixinController {
 							replyContent = weixinService.getClassesNewsHistoryByStudentId(studentid);
 						} else if("班级成绩".equals(process)){
 							replyContent = weixinService.test(studentid);
+						}else if("图文".equals(process)){
+							replyContent = new ImageMessageService().createPic(request);
 						}
 					} catch (NumberFormatException e) {
 						replyContent = Reply.ERROR_CONTENT;
