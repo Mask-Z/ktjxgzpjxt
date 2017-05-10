@@ -9,33 +9,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>echats</title>
-    <script src="<%=request.getContextPath()%>/assets/js/echarts.js"></script>
+    <title>成绩柱状图</title>
+    <script src="<%=request.getContextPath()%>/assets/js/echarts.common.min.js"></script>
 </head>
+<style>
+    .div{
+        background-position: center;
+    }
+</style>
 <body>
 
-
-<table id="sample-table-1" class="table table-striped table-bordered table-hover">
-    <thead>
-    <tr>
-        <th width="15%">学生姓名</th>
-        <th width="15%">学生成绩</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <c:forEach items="${listName}" var="name">
-            <%--<td><a href="#">${mame}</a></td>--%>
-            <td><a href="#">${name}</a></td>
-        </c:forEach>
-    </tr>
-    <tr>
-        <c:forEach items="${listMark}" var="mark">
-            <td><a href="#">${mark}</a></td>
-        </c:forEach>
-    </tr>
-    </tbody>
-</table>
 
 
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->

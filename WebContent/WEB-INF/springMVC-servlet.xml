@@ -31,7 +31,13 @@
       <mvc:interceptors>
           <mvc:interceptor>
 			<mvc:mapping path="/manager/**"/>              
-			<bean class="com.aixuexiao.web.interceptor.ManagerInterceptor" />
+			<bean class="com.aixuexiao.web.interceptor.ManagerInterceptor" >
+				<property name="uncheckUrls">
+				<list>
+					<value>/changda/**</value>
+				</list>
+				</property>
+			</bean>
           </mvc:interceptor>
       </mvc:interceptors>
       

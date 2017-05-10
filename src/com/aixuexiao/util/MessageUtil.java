@@ -1,6 +1,7 @@
 package com.aixuexiao.util;
 
 import com.aixuexiao.model.Article;
+import com.aixuexiao.resopnseMessage.MyArticle;
 import com.aixuexiao.resopnseMessage.NewsMessage;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.util.QuickWriter;
@@ -145,7 +146,7 @@ public class MessageUtil {
      */
     public static String newsMessageToXml(NewsMessage newsMessage) {
         xstream.alias("xml", newsMessage.getClass());
-        xstream.alias("item", new Article().getClass());
+        xstream.alias("item", new MyArticle().getClass());
         return xstream.toXML(newsMessage);
     }
 
