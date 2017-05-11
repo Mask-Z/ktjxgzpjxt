@@ -53,6 +53,7 @@ public class WeixinUtil {
                 protected void writeText(QuickWriter writer, String text) {
                     if (cdata) {
                         writer.write("<![CDATA[");
+                        MyLogger.info("添加标记: "+text);
                         writer.write(text);
                         writer.write("]]>");
                     } else {
@@ -91,7 +92,29 @@ public class WeixinUtil {
         return xstream.toXML(reply);
     }
 
+    public static String replyTextToXml(Reply reply) {
+        String type = reply.getMsgType();
+            xstream.omitField(Reply.class, "articles");
+            xstream.omitField(Reply.class, "articleCount");
+            xstream.omitField(Reply.class, "musicUrl");
+            xstream.omitField(Reply.class, "hQMusicUrl");
+        xstream.autodetectAnnotations(true);
+        xstream.alias("xml", reply.getClass());
+//        xstream.alias("item", new Article().getClass());
+        return xstream.toXML(reply);
+    }
+    public static String replyNewsToXml(Reply reply) {
+        String type = reply.getMsgType();
 
+            xstream.omitField(Reply.class, "content");
+            xstream.omitField(Reply.class, "musicUrl");
+            xstream.omitField(Reply.class, "hQMusicUrl");
+
+        xstream.autodetectAnnotations(true);
+        xstream.alias("xml", reply.getClass());
+        xstream.alias("item", new Article().getClass());
+        return xstream.toXML(reply);
+    }
     /**
      * 存储数据的Map转换为对应的Message对象
      *

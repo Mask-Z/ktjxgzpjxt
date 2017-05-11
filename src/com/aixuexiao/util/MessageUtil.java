@@ -1,6 +1,7 @@
 package com.aixuexiao.util;
 
 import com.aixuexiao.model.Article;
+import com.aixuexiao.model.Reply;
 import com.aixuexiao.resopnseMessage.MyArticle;
 import com.aixuexiao.resopnseMessage.NewsMessage;
 import com.thoughtworks.xstream.XStream;
@@ -122,10 +123,10 @@ public class MessageUtil {
      * @param textMessage 文本消息对象
      * @return xml
      */
-//    public static String textMessageToXml(TextMessage textMessage) {
-//        xstream.alias("xml", textMessage.getClass());
-//        return xstream.toXML(textMessage);
-//    }
+    public static String textMessageToXml(Reply textMessage) {
+        xstream.alias("xml", textMessage.getClass());
+        return xstream.toXML(textMessage);
+    }
 
     /**
      * 音乐消息对象转换成xml
@@ -144,6 +145,7 @@ public class MessageUtil {
      * @param newsMessage 图文消息对象
      * @return xml
      */
+//    public static String newsMessageToXml(NewsMessage newsMessage) {
     public static String newsMessageToXml(NewsMessage newsMessage) {
         xstream.alias("xml", newsMessage.getClass());
         xstream.alias("item", new MyArticle().getClass());

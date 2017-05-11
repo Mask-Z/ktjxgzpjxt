@@ -7,17 +7,15 @@ import java.util.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.aixuexiao.model.*;
 import com.aixuexiao.service.WeixinService;
 import com.aixuexiao.util.MyLogger;
+import com.aixuexiao.util.WeixinUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.aixuexiao.model.Classes;
-import com.aixuexiao.model.ExamMark;
-import com.aixuexiao.model.Student;
-import com.aixuexiao.model.StudentMessage;
 import com.aixuexiao.service.StudentService;
 
 /**
@@ -33,6 +31,42 @@ public class StudentController {
 
 	@Resource(name="weixinService")
 	private WeixinService weixinService;
+
+	/**
+	 * 生成图文消息
+	 * @param student
+	 * @param message
+	 * @return
+	 */
+	public  String getImgResponse(Student student,Message message){
+		String back="";
+		int classid = student.getClassid();
+		MyLogger.info("classid  "+classid + "");
+		Reply reply = new Reply();
+		reply.setToUserName(message.getFromUserName());
+		reply.setFromUserName(message.getToUserName());
+		reply.setCreateTime(new Date());
+		reply.setMsgType(Reply.NEWS);
+		List<Article> articleList = new ArrayList<>();
+		Article article = new Article();
+		article.setTitle("考试成绩");
+		article.setDescription(classid + "班英语成绩");
+		article.setPicUrl("http://localhost:8080/aixuexiao/assets/img/bg1.jpg");
+		article.setUrl("http://localhost:8080/aixuexiao/changda/echats?classid=" + classid);
+		articleList.add(article);
+		reply.setArticleCount(articleList.size());
+		reply.setArticles(articleList);
+		reply.setContent("");
+		reply.setFuncFlag(0);
+		//weixinService.addReply(reply);//保存回复消息到数据库
+		back = WeixinUtil.replyNewsToXml(reply);
+//		back = WeixinUtil.replyToXml(reply);
+//        back= MessageUtil.newsMessageToXml(reply);
+//        }
+		MyLogger.info(back);
+		return back;
+	}
+
 
 	@RequestMapping(value="/manager/students",method=RequestMethod.GET)
 	public ModelAndView listStudent(String pagenum,Student student){

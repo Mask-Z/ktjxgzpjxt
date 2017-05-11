@@ -10,14 +10,24 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * 回复用户的消息
- * @author lizy
  */
 public class Reply implements Serializable {
 
 	public static final String TEXT = "text";
 	public static final String MUSIC = "music";
 	public static final String NEWS = "news";
-	
+	// 位0x0001被标志时，星标刚收到的消息
+	@XStreamAlias("FuncFlag")
+	private int FuncFlag;
+
+	public int getFuncFlag() {
+		return FuncFlag;
+	}
+
+	public void setFuncFlag(int funcFlag) {
+		FuncFlag = funcFlag;
+	}
+
 	public static final String ERROR_CONTENT = "查询失败，请检查你的回复是否正确" +
 			"。\n查询最近考试情况请回复：学号_考试（如：3021_考试）\n 查询最近最近10次考试情况请回复：" +
 			"学号_考试历史（如：3021_考试历史）\n 查询老师留言情况请回复：" +

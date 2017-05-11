@@ -14,6 +14,7 @@ import com.aixuexiao.dao.StudentMessageDao;
 import com.aixuexiao.model.*;
 import com.aixuexiao.service.ImageMessageService;
 import com.aixuexiao.service.StudentService;
+import com.aixuexiao.util.MessageUtil;
 import com.aixuexiao.util.MyLogger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -117,6 +118,7 @@ public class WeixinController {
                 String content = message.getContent();//消息内容
                 String[] cs = content.split("_");//消息内容都以下划线_分隔
                 //消息长度为2 时,判断是否为绑定学号
+    //            /**
                 if (cs.length == 2) {//绑定学号
                     try {
                         int studentid=Integer.valueOf(cs[0]);
@@ -126,27 +128,33 @@ public class WeixinController {
                     }catch (NumberFormatException e) {
  // 1
                         replyContent = Reply.ERROR_CONTENT;
-                        return getTextResponse(replyContent,message);
+                    return  getTextResponse(replyContent,message);
                     }
                 }
-
+//**/
 
                 Student student=isConnected2(fromUserName);
                 if (null==student){
-                    replyContent="你还未绑定学号,请回复以下格式消息绑定学号 : 学号_绑定(如:3011_绑定)\\n\\n注意 : 一个微信号只能绑定一个学号! 且不可解绑!!!";
+                    replyContent="你还未绑定学号,请回复以下格式消息绑定学号 : 学号_绑定(如:3011_绑定)\n\n注意 : 一个微信号只能绑定一个学号! 且不可解绑!!!";
  // 3
                     return  getTextResponse(replyContent,message);
                 }
+
                 if ("图文".equals(message.getContent())){
-                    return getImgResponse(student,message);
+//                    return new StudentController().getImgResponse(student,message);
+                    return new ImageMessageService().createPic(student,message);
                 }
+
                 else {
                     return getTextResponse(getProcess(student.getId(),message.getContent()),message);
+//                    return  getTextResponse(replyContent,message);
                 }
             }else {
      // 4
-                return  getTextResponse(replyContent,message);
+                    return  getTextResponse(replyContent,message);
             }
+
+
             //判断
 //            if (type.equals(Message.TEXT)) {//仅处理文本回复内容
 //                String content = message.getContent();//消息内容
@@ -208,6 +216,8 @@ public class WeixinController {
                 replyContent = weixinService.getClassesNewsHistoryByStudentId(studentid);
             } else if ("班级成绩".equals(process)) {
                 replyContent = weixinService.test(studentid);
+            }else {
+                replyContent="请输入正确的指令\n"+Reply.WELCOME_CONTENT;
             }
 
 //        } catch (NumberFormatException e) {
@@ -229,46 +239,33 @@ public class WeixinController {
         reply.setToUserName(message.getFromUserName());
         reply.setFromUserName(message.getToUserName());
         reply.setCreateTime(new Date());
-        reply.setMsgType(Reply.TEXT);
         reply.setContent(replyContent);
+        reply.setFuncFlag(0);
+//        if (message.getContent().equals("图文")){
+//            reply.setMsgType(Reply.NEWS);
+//            List<Article> articleList = new ArrayList<>();
+//            Article article = new Article();
+//            article.setTitle("考试成绩");
+//            article.setDescription( student.getId()+ "班英语成绩");
+//            article.setPicUrl("http://localhost:8080/aixuexiao/assets/img/bg1.jpg");
+//            article.setUrl("http://localhost:8080/aixuexiao/changda/echats?classid=" + student.getId());
+//            articleList.add(article);
+//            reply.setArticleCount(articleList.size());
+//            reply.setArticles(articleList);
+//        }else {
+            reply.setMsgType(Reply.TEXT);
+//        }
         weixinService.addReply(reply);//保存回复消息到数据库
         //将回复消息序列化为xml形式
         MyLogger.info("序列化前: "+reply.getContent());
         back = WeixinUtil.replyToXml(reply);
+//        back = WeixinUtil.replyTextToXml(reply);
+//        back= MessageUtil.textMessageToXml(reply);
         MyLogger.info("序列化后: "+back);
         return back;
     }
 
-    public String getImgResponse(Student student,Message message){
-        String back="";
-        //根据学号来获取班级号
-//        if (null == student) {
-//            MyLogger.info("未查到该班级");
-//            back = Reply.ERROR_CONTENT;
-//        } else {
-            int classid = student.getClassid();
-            MyLogger.info("classid  "+classid + "");
-            Reply reply = new Reply();
-            reply.setToUserName(message.getFromUserName());
-            reply.setFromUserName(message.getToUserName());
-            reply.setCreateTime(new Date());
-            reply.setMsgType(Reply.NEWS);
-            List<Article> articleList = new ArrayList<>();
-            Article article = new Article();
-            article.setTitle("考试成绩");
-            article.setDescription(classid + "班英语成绩");
-            article.setPicUrl("http://localhost:8080/aixuexiao/assets/img/bg1.jpg");
-            article.setUrl("http://localhost:8080/aixuexiao/changda/echats?classid=" + classid);
-            articleList.add(article);
-            reply.setArticleCount(articleList.size());
-            reply.setArticles(articleList);
-            reply.setContent("");
-            weixinService.addReply(reply);//保存回复消息到数据库
-            back = WeixinUtil.replyToXml(reply);
-//        }
-            MyLogger.info(back);
-            return back;
-    }
+
     //微信公众平台验证url是否有效使用的接口
     @RequestMapping(value = "/weixin", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
     @ResponseBody
