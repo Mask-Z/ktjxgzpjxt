@@ -5,8 +5,10 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import com.aixuexiao.service.WeixinService;
+import com.aixuexiao.util.MyLogger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -112,9 +114,11 @@ public class StudentController {
 	 * @return
 	 */
 	@RequestMapping(value="/changda/echats",method=RequestMethod.GET)
-	public ModelAndView echats(){
+	public ModelAndView echats(HttpServletRequest request){
+		String  classid=request.getParameter("classid");
+		MyLogger.info(classid);
 		ModelAndView mv=new ModelAndView();
-		Map<String,BigDecimal> map = weixinService.test2(301);
+		Map<String,BigDecimal> map = weixinService.test2(Integer.valueOf(classid));
 		List<Map.Entry<String,BigDecimal>> list=new ArrayList<>(map.entrySet());
 		Collections.sort(list, new Comparator<Map.Entry<String, BigDecimal>>() {
 			@Override
@@ -122,11 +126,11 @@ public class StudentController {
 				return o1.getValue().intValue()-o2.getValue().intValue();
 			}
 		});
-		System.out.println("排序后");
+		MyLogger.info("排序后");
 		List<String> listName=new ArrayList<>();
 		List<BigDecimal> listMark=new ArrayList<>();
 		for (Map.Entry<String,BigDecimal> mapping:list){
-			System.out.println(mapping.getKey()+":"+mapping.getValue());
+			MyLogger.info(mapping.getKey()+":"+mapping.getValue());
 			listName.add(mapping.getKey());
 			listMark.add(mapping.getValue());
 		}

@@ -2,9 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.aixuexiao.dao.StudentDao">
-	
+
+
+	<!--<select id="selectClassIdById" parameterType="int"   resultMap="int"  >-->
+		<!--select classid-->
+		<!--from student-->
+		<!--where id = #{id}-->
+	<!--</select>-->
+	<!--查出所有学生信息-->
+	<select id="selectAllStudent"   resultMap="studentMap"  >
+		select *
+		from student
+	</select>
+
 	<select id="selectStudentById" parameterType="int"   resultMap="studentMap"  >
-	   select id,classid,name,remark 
+	   select id,classid,name,remark,fromusername,flag
 	   from student
 	   where id = #{id}
 	</select>    
@@ -28,7 +40,7 @@
 	
 	<update id="updateStudent"  parameterType="com.aixuexiao.model.Student">
 	    update student 
-	    set classid=#{classid},name=#{name},remark=#{remark}
+	    set classid=#{classid},name=#{name},remark=#{remark},fromusername=#{fromusername},flag=#{flag}
 	    where id = #{id}
 	</update>
 	
@@ -46,6 +58,8 @@
 	     <result property="classid" column="classid"/>  
 	     <result property="name" column="name"/>
 	     <result property="remark" column="remark"/>
+		 <result property="fromusername" column="fromusername"/>
+		 <result property="flag" column="flag"/>
 	</resultMap>
 	
 </mapper>

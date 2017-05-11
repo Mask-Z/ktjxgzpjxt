@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-		<title>爱学校</title>
+		<title>常州大学</title>
 		<meta name="description" content="User login page" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<!--basic styles-->
@@ -34,11 +34,11 @@
 									<div class="center">
 										<h1>
 											<i class="icon-leaf green"></i>
-											<span class="red">&nbsp;爱学校</span>
+											<span class="red">&nbsp;常州大学</span>
 											<span class="white"></span>
 											
 										</h1>
-										<h4 class="blue">&copy; <a href="http://weibo.com/2098099627" target="_blank">智云同学</a></h4>
+										<h4 class="blue">&copy; <a href="https://github.com/Mask-Z/ktjxgzpjxt" target="_blank">周云龙</a></h4>
 									</div>
 								</div>
 	
@@ -94,11 +94,11 @@
 														</fieldset>
 													</form>
 													<div class="social-or-login center">
-													<span class="bigger-110">爱学校(aixuexiao)</span>
+													<span class="bigger-110">常州大学(aixuexiao)</span>
 													</div>
 													
 													<div class="social-login center">
-														<img alt="爱学校" src="<%=request.getContextPath()%>/assets/images/getqrcode.jpeg" style="height: 100px;width: 100px;" >
+														<img alt="常州大学" src="<%=request.getContextPath()%>/assets/images/getqrcode.jpeg" style="height: 100px;width: 100px;" >
 													</div>
 													
 												</div><!--/widget-main-->

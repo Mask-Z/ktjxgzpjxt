@@ -27,5 +27,9 @@ public class StudentMessageDao extends BaseDao {
 	public int deleteStudentMessageById(int id) {
 		return this.writerSqlSession.delete("com.aixuexiao.dao.StudentMessageDao.deleteStudentMessageById", id);
 	}
+//	查出所有学生信息
+	public List<StudentMessage> findAllStudentMessage(){
+		return this.readSqlSession.selectList("com.aixuexiao.dao.StudentMessageDao.selectAllStudentMessage");
+	}
 	
 }

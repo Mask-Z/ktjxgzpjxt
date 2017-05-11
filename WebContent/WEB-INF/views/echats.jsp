@@ -13,12 +13,13 @@
     <script src="<%=request.getContextPath()%>/assets/js/echarts.common.min.js"></script>
 </head>
 <style>
-    .div{
-        background-position: center;
+    body{ text-align:center}
+    div{
+        margin:0 auto;
+        top: 10%;
     }
 </style>
 <body>
-
 
 
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
@@ -53,9 +54,12 @@
         xAxis:{data:name.slice(1,name.length-1).split(",")},
         series:[{
             name:'分数',
+            center:'50%',
             data:mark.slice(1,mark.length-1).split(",")
         }]
+
     })
+
 </script>
 </body>
 </html>

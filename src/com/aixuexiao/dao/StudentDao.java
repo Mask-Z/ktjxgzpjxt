@@ -12,6 +12,14 @@ import com.aixuexiao.model.Student;
 public class StudentDao extends BaseDao {
 
 
+	/**
+	 * 查出所有学生信息
+	 * @return
+	 */
+	public List<Student> findAllStudent() {
+		return this.readSqlSession.selectList("com.aixuexiao.dao.StudentDao.selectAllStudent");
+	}
+
 	public Student findStudentById(int id) {
 		return this.readSqlSession.selectOne("com.aixuexiao.dao.StudentDao.selectStudentById",id);
 	}
