@@ -1,10 +1,7 @@
-aixuexiao
-=========
+
 
 一个基于SAE Java平台的微信平台公众帐号应用例子。
 
-详情访问：http://aixuexiao.sinaapp.com
-微信公众帐号：爱学校(aixuexiao)
 
 
 微信公众帐号功能为作为学生家长和学校老师之间的沟通桥梁。
@@ -26,5 +23,4 @@ replyMessage（对应URL:/weixin POST）方法则是回复方法。
 
 有任何问题可用联系我，看到第一时间回复
 
-zhiyun.cloud@gmail.com
-@智云同学
+
