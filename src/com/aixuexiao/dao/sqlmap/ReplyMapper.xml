@@ -11,7 +11,7 @@
 	    values (#{toUserName},#{fromUserName},#{msgType},#{createTime},#{content},#{musicUrl},#{hQMusicUrl},#{articleCount}) 
 	</insert>
 
-	<insert id="addArticle"    parameterType="com.aixuexiao.model.Article"> 
+	<insert id="addArticle"    parameterType="com.aixuexiao.model.Article">
 	    INSERT INTO reply_article (replyid,title,description,picurl,url ) 
 	    VALUES(#{replyId},#{title},#{description},#{picUrl},#{url}) 
 	 </insert>    

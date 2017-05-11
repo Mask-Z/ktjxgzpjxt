@@ -104,7 +104,10 @@ public class WeixinUtil {
         Message message = new Message();
         message.setToUserName(map.get("ToUserName"));
         message.setFromUserName(map.get("FromUserName"));
-        message.setCreateTime(new Date(Long.parseLong(map.get("CreateTime"))));
+//        System.out.println(map.get("CreateTime"));
+//        System.out.println(new Date(Long.parseLong(map.get("CreateTime"))));
+//        Date date=new Date(Long.parseLong()map.get(""));
+        message.setCreateTime(new Date());
         message.setMsgType(msgType);
         message.setMsgId(map.get("MsgId"));
         if (msgType.equals(Message.TEXT)) {

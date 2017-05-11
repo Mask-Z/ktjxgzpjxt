@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.aixuexiao.resopnseMessage.MyArticle;
 import org.springframework.stereotype.Service;
 
 import com.aixuexiao.dao.ClassesNewsDao;

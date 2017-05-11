@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.aixuexiao.resopnseMessage.MyArticle;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
@@ -67,9 +68,9 @@ public class Reply implements Serializable {
 	@XStreamAlias("Articles")
     private List<Article> articles;
 
-	public static void main(String[] args) {
-		System.out.println("http://mmsns.qpic.cn/mmsns/UKMLIAeREF9IyZGhfvF8f0CAKDzEvXwCibLKUM4kmsfGnZvFM7EJlrg/0".length());
-	}
+//	public static void main(String[] args) {
+//		System.out.println("http://mmsns.qpic.cn/mmsns/UKMLIAeREF9IyZGhfvF8f0CAKDzEvXwCibLKUM4kmsfGnZvFM7EJlrg/0".length());
+//	}
 	
 	public int getId() {
 		return id;

@@ -1,5 +1,8 @@
 package com.aixuexiao.resopnseMessage;
 
+import com.aixuexiao.model.Reply;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
 /**
  * Created by Mr丶周 on 2017/5/10.
  */
@@ -12,6 +15,27 @@ public class MyArticle {
 	private String PicUrl;
 	// 点击图文消息跳转链接
 	private String Url;
+
+	@XStreamOmitField
+	private int replyId;
+
+	private Reply reply;
+
+	public int getReplyId() {
+		return replyId;
+	}
+
+	public void setReplyId(int replyId) {
+		this.replyId = replyId;
+	}
+
+	public Reply getReply() {
+		return reply;
+	}
+
+	public void setReply(Reply reply) {
+		this.reply = reply;
+	}
 
 	public String getTitle() {
 		return Title;

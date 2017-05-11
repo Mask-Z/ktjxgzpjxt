@@ -1,6 +1,7 @@
 package com.aixuexiao.service;
 
 import com.aixuexiao.model.Article;
+import com.aixuexiao.model.Reply;
 import com.aixuexiao.resopnseMessage.MyArticle;
 import com.aixuexiao.util.*;
 import com.aixuexiao.resopnseMessage.NewsMessage;
@@ -47,14 +48,40 @@ public class ImageMessageService {
         MyArticle article=new MyArticle();
         article.setTitle("考试成绩");
         article.setDescription("301班英语成绩");
-//        article.setPicUrl("http://localhost:8080/aixuexiao/assets/img/bg1.jpg");
-        article.setPicUrl("http://5afbaf5d.ngrok.io/aixuexiao/assets/img/bg1.jpg");
-//        article.setUrl("http://localhost:8080/aixuexiao/changda/echats");
-        article.setUrl("http://5afbaf5d.ngrok.io/aixuexiao/changda/echats");
+        article.setPicUrl("http://localhost:8080/aixuexiao/assets/img/bg1.jpg");
+//        article.setPicUrl("http://5afbaf5d.ngrok.io/aixuexiao/assets/img/bg1.jpg");
+        article.setUrl("http://localhost:8080/aixuexiao/changda/echats");
+//        article.setUrl("http://5afbaf5d.ngrok.io/aixuexiao/changda/echats");
         articleList.add(article);
         message.setArticleCount(articleList.size());
         message.setArticles(articleList);
         return MessageUtil.newsMessageToXml(message);
 
     }
+
+//    public  String  createPic2(Map<String, String> requestMap)  {
+//
+//        // 发送方帐号（open_id）
+//        String fromUserName = requestMap.get("FromUserName");
+//        // 公众帐号
+//        String toUserName = requestMap.get("ToUserName");
+//        // 消息类型
+////        String msgType = requestMap.get("MsgType");
+//        Reply reply=new Reply();
+//        reply.setToUserName(fromUserName);
+//        reply.setFromUserName(toUserName);
+//        reply.setCreateTime(new Date());
+//        reply.setMsgType(Reply.NEWS);
+//        List<Article> articleList=new ArrayList<>();
+//        Article article=new Article();
+//        article.setTitle("考试成绩");
+//        article.setDescription("301班英语成绩");
+//        article.setPicUrl("http://localhost:8080/aixuexiao/assets/img/bg1.jpg");
+//        article.setUrl("http://localhost:8080/aixuexiao/changda/echats");
+//        articleList.add(article);
+//        reply.setArticleCount(articleList.size());
+//        reply.setArticles(articleList);
+//        return MessageUtil.newsMessageToXml(reply);
+//
+//    }
 }

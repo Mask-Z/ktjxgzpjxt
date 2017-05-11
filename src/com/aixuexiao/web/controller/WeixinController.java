@@ -1,6 +1,7 @@
 package com.aixuexiao.web.controller;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.aixuexiao.model.Article;
 import com.aixuexiao.service.ImageMessageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,7 +74,25 @@ public class WeixinController {
 						} else if("班级成绩".equals(process)){
 							replyContent = weixinService.test(studentid);
 						}else if("图文".equals(process)){
-							replyContent = new ImageMessageService().createPic(request);
+							Reply reply=new Reply();
+							reply.setToUserName(message.getFromUserName());
+							reply.setFromUserName(message.getToUserName());
+							reply.setCreateTime(new Date());
+							reply.setMsgType(Reply.NEWS);
+							List<Article> articleList=new ArrayList<>();
+							Article article=new Article();
+							article.setTitle("考试成绩");
+							article.setDescription("301班英语成绩");
+							article.setPicUrl("http://localhost:8080/aixuexiao/assets/img/bg1.jpg");
+							article.setUrl("http://localhost:8080/aixuexiao/changda/echats");
+							articleList.add(article);
+							reply.setArticleCount(articleList.size());
+							reply.setArticles(articleList);
+							reply.setContent("");
+							weixinService.addReply(reply);//保存回复消息到数据库
+							String back = WeixinUtil.replyToXml(reply);
+							System.out.println(back);
+							return back;
 						}
 					} catch (NumberFormatException e) {
 						replyContent = Reply.ERROR_CONTENT;

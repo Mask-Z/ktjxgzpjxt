@@ -6,11 +6,22 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 /**
  * 用于过滤未登陆用户访问管理内容的拦截器
  * @author
  */
 public class ManagerInterceptor implements HandlerInterceptor{
+	private List<String> uncheckUrls;
+
+	public List<String> getUncheckUrls() {
+		return uncheckUrls;
+	}
+
+	public void setUncheckUrls(List<String> uncheckUrls) {
+		this.uncheckUrls = uncheckUrls;
+	}
 
 	@Override
 	public void afterCompletion(HttpServletRequest request,

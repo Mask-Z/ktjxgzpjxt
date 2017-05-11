@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.aixuexiao.resopnseMessage.MyArticle;
 import org.springframework.stereotype.Component;
 
 import com.aixuexiao.model.Article;

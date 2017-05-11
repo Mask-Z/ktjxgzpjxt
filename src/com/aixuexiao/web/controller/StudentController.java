@@ -111,7 +111,7 @@ public class StudentController {
 	 * @param
 	 * @return
 	 */
-	@RequestMapping(value="/manager/echats",method=RequestMethod.GET)
+	@RequestMapping(value="/changda/echats",method=RequestMethod.GET)
 	public ModelAndView echats(){
 		ModelAndView mv=new ModelAndView();
 		Map<String,BigDecimal> map = weixinService.test2(301);
