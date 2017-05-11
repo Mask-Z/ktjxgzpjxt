@@ -4,11 +4,11 @@
 <mapper namespace="com.aixuexiao.dao.StudentDao">
 
 
-	<!--<select id="selectClassIdById" parameterType="int"   resultMap="int"  >-->
-		<!--select classid-->
-		<!--from student-->
-		<!--where id = #{id}-->
-	<!--</select>-->
+	<select id="selectStudentByFromUserName" parameterType="String"   resultMap="studentMap"  >
+		select id,classid,name,remark,fromusername,flag
+		from student
+		where fromusername = #{fromusername}
+	</select>
 	<!--查出所有学生信息-->
 	<select id="selectAllStudent"   resultMap="studentMap"  >
 		select *

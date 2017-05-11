@@ -16,7 +16,7 @@ public  class Message implements Serializable{
 	public static final String LOCATION = "location";
 	public static final String LINK = "link";
 	public static final String EVENT = "event";
-	
+
 	@XStreamOmitField
 	private int id;//数据库存储的id
 	

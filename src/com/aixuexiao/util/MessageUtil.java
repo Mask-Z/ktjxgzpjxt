@@ -153,7 +153,6 @@ public class MessageUtil {
     /**
      * 扩展xstream，使其支持CDATA块
      *
-     * @date 2013-05-19
      */
     private static XStream xstream = new XStream(new XppDriver() {
         public HierarchicalStreamWriter createWriter(Writer out) {

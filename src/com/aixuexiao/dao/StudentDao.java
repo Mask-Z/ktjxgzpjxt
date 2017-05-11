@@ -13,6 +13,13 @@ public class StudentDao extends BaseDao {
 
 
 	/**
+	 * 根据微信标识查出学生
+	 */
+	public Student findStudentByFromUserName(String  fromusername) {
+		return this.readSqlSession.selectOne("com.aixuexiao.dao.StudentDao.selectStudentByFromUserName",fromusername);
+	}
+
+	/**
 	 * 查出所有学生信息
 	 * @return
 	 */
