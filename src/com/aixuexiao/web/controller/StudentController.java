@@ -150,7 +150,7 @@ public class StudentController {
 	@RequestMapping(value="/changda/echats",method=RequestMethod.GET)
 	public ModelAndView echats(HttpServletRequest request){
 		String  classid=request.getParameter("classid");
-		MyLogger.info(classid);
+//		MyLogger.info(classid);
 		ModelAndView mv=new ModelAndView();
 		Map<String,BigDecimal> map = weixinService.test2(Integer.valueOf(classid));
 		List<Map.Entry<String,BigDecimal>> list=new ArrayList<>(map.entrySet());

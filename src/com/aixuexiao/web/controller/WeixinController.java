@@ -1,29 +1,27 @@
 package com.aixuexiao.web.controller;
 
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import com.aixuexiao.dao.StudentDao;
 import com.aixuexiao.dao.StudentMessageDao;
-import com.aixuexiao.model.*;
+import com.aixuexiao.model.Message;
+import com.aixuexiao.model.Reply;
+import com.aixuexiao.model.Student;
 import com.aixuexiao.service.ImageMessageService;
 import com.aixuexiao.service.StudentService;
-import com.aixuexiao.util.MessageUtil;
+import com.aixuexiao.service.WeixinService;
 import com.aixuexiao.util.MyLogger;
+import com.aixuexiao.util.WeixinUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.aixuexiao.service.WeixinService;
-import com.aixuexiao.util.WeixinUtil;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Controller()
 public class WeixinController {
@@ -74,25 +72,25 @@ public class WeixinController {
         return false;
     }
 
-    public Student isConnected2(String fromUserName){
+    public Student isConnected2(String fromUserName) {
         return studentDao.findStudentByFromUserName(fromUserName);
     }
 
-    public String connId(String fromUserName, int studentid, String process){
-        String back="";
-        if (!process.equals("绑定")){
+    public String connId(String fromUserName, int studentid, String process) {
+        String back = "";
+        if (!process.equals("绑定")) {
             return "请按指示命令操作!";
         }
-        Student student1=isConnected2(fromUserName);
-        Student student2=studentDao.findStudentById(studentid);
-        if(null!=student1){
-            back="该微信已绑定学号!";
+        Student student1 = isConnected2(fromUserName);
+        Student student2 = studentDao.findStudentById(studentid);
+        if (null != student1) {
+            back = "该微信已绑定学号!";
             return back;
         }
-        if (null==student2){
-            back="请输入正确的学号!";
+        if (null == student2) {
+            back = "请输入正确的学号!";
             return back;
-        }else {
+        } else {
             student2.setFromusername(fromUserName);
             student2.setFlag(1);
             studentDao.updateStudent(student2);
@@ -100,6 +98,7 @@ public class WeixinController {
         }
 
     }
+
     //接收微信公众号接收的消息，处理后再做相应的回复
     @RequestMapping(value = "/weixin", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
     @ResponseBody
@@ -114,77 +113,43 @@ public class WeixinController {
             //获取微信用户唯一标识
             String fromUserName = message.getFromUserName();
 
-            if (type.equals(Message.TEXT)){
+            if (type.equals(Message.TEXT)) {
                 String content = message.getContent();//消息内容
                 String[] cs = content.split("_");//消息内容都以下划线_分隔
                 //消息长度为2 时,判断是否为绑定学号
-    //            /**
+                //            /**
                 if (cs.length == 2) {//绑定学号
                     try {
-                        int studentid=Integer.valueOf(cs[0]);
-                        String process=cs[1];
-   //  2
-                        return getTextResponse(connId(fromUserName,studentid,process),message);
-                    }catch (NumberFormatException e) {
- // 1
+                        int studentid = Integer.valueOf(cs[0]);
+                        String process = cs[1];
+                        //  2
+                        return getTextResponse(connId(fromUserName, studentid, process), message);
+                    } catch (NumberFormatException e) {
+                        // 1
                         replyContent = Reply.ERROR_CONTENT;
-                    return  getTextResponse(replyContent,message);
+                        return getTextResponse(replyContent, message);
                     }
                 }
 //**/
 
-                Student student=isConnected2(fromUserName);
-                if (null==student){
-                    replyContent="你还未绑定学号,请回复以下格式消息绑定学号 : 学号_绑定(如:3011_绑定)\n\n注意 : 一个微信号只能绑定一个学号! 且不可解绑!!!";
- // 3
-                    return  getTextResponse(replyContent,message);
+                Student student = isConnected2(fromUserName);
+                if (null == student) {
+                    replyContent = "你还未绑定学号,请回复以下格式消息绑定学号 : 学号_绑定(如:3011_绑定)\n\n注意 : 一个微信号只能绑定一个学号! 且不可解绑!!!";
+                    // 3
+                    return getTextResponse(replyContent, message);
                 }
 
-                if ("图文".equals(message.getContent())){
+                if ("图文".equals(message.getContent())) {
 //                    return new StudentController().getImgResponse(student,message);
-                    return new ImageMessageService().createPic(student,message);
-                }
-
-                else {
-                    return getTextResponse(getProcess(student.getId(),message.getContent()),message);
+                    return new ImageMessageService().createPic(student, message);
+                } else {
+                    return getTextResponse(getProcess(student.getId(), message.getContent()), message);
 //                    return  getTextResponse(replyContent,message);
                 }
-            }else {
-     // 4
-                    return  getTextResponse(replyContent,message);
+            } else {
+                // 4
+                return getTextResponse(replyContent, message);
             }
-
-
-            //判断
-//            if (type.equals(Message.TEXT)) {//仅处理文本回复内容
-//                String content = message.getContent();//消息内容
-//                String[] cs = content.split("_");//消息内容都以下划线_分隔
-//                if (cs.length == 2) {
-//                        int studentid = Integer.parseInt(cs[0]);//学生编号
-//                        String process = cs[1];//操作
-//                        if (isConnected(fromUserName, studentid, process)) {
-//                            Student student = studentDao.findStudentById(studentid);
-//                            if (student.getFlag() == 1) {
-//                                student.setFlag(2);
-//                                studentDao.updateStudent(student);
-//                                replyContent = "绑定学号成功!\n\n\n" + Reply.WELCOME_CONTENT;
-//                            }
-//                            } else {
-//                                replyContent = getProcess(studentid, process);
-//                            }
-//                        } else {
-////                            if (!replyContent.startsWith(" "))
-//                                replyContent = " 你还未绑定学号,请回复以下格式消息绑定学号 : 学号_绑定(如:3011_绑定)\n\n注意 : 一个微信号只能绑定一个学号! 且不可解绑!!!";
-//                        }
-////                    } catch (Exception e) {
-////                        e.printStackTrace();
-////                        replyContent = Reply.ERROR_CONTENT;
-////                    }
-//
-//                }
-//            }
-
-//            return getTextResponse(replyContent,message);
 
         } else {
             return "error";
@@ -200,40 +165,36 @@ public class WeixinController {
      */
     public String getProcess(int studentid, String process) {
         String replyContent = "";
-//        try {
-////            studentid = Integer.parseInt(cs[0]);
-            if ("考试".equals(process)) {
-                replyContent = weixinService.getSingleExamMarkStringByStudentId(studentid);
-            } else if ("考试历史".equals(process)) {
-                replyContent = weixinService.getExamMarkHistoryStringByStudentId(studentid);
-            } else if ("留言".equals(process)) {
-                replyContent = weixinService.getSingleStudentMessageByStudentId(studentid);
-            } else if ("留言历史".equals(process)) {
-                replyContent = weixinService.getStudentMessageHistoryByStudentId(studentid);
-            } else if ("动态".equals(process)) {
-                replyContent = weixinService.getSingleClassesNewsByStudentId(studentid);
-            } else if ("动态历史".equals(process)) {
-                replyContent = weixinService.getClassesNewsHistoryByStudentId(studentid);
-            } else if ("班级成绩".equals(process)) {
-                replyContent = weixinService.test(studentid);
-            }else {
-                replyContent="请输入正确的指令\n"+Reply.WELCOME_CONTENT;
-            }
+        if ("考试".equals(process)) {
+            replyContent = weixinService.getSingleExamMarkStringByStudentId(studentid);
+        } else if ("考试历史".equals(process)) {
+            replyContent = weixinService.getExamMarkHistoryStringByStudentId(studentid);
+        } else if ("留言".equals(process)) {
+            replyContent = weixinService.getSingleStudentMessageByStudentId(studentid);
+        } else if ("留言历史".equals(process)) {
+            replyContent = weixinService.getStudentMessageHistoryByStudentId(studentid);
+        } else if ("动态".equals(process)) {
+            replyContent = weixinService.getSingleClassesNewsByStudentId(studentid);
+        } else if ("动态历史".equals(process)) {
+            replyContent = weixinService.getClassesNewsHistoryByStudentId(studentid);
+        } else if ("班级成绩".equals(process)) {
+            replyContent = weixinService.test(studentid);
+        } else {
+            replyContent = "请输入正确的指令\n" + Reply.WELCOME_CONTENT;
+        }
 
-//        } catch (NumberFormatException e) {
-//            replyContent = Reply.ERROR_CONTENT;
-//        }
         return replyContent;
     }
 
     /**
      * 文本型消息回复
+     *
      * @param replyContent
      * @param message
      * @return
      */
-    public String getTextResponse(String replyContent,Message message){
-        String back="";
+    public String getTextResponse(String replyContent, Message message) {
+        String back = "";
         //拼装回复消息
         Reply reply = new Reply();
         reply.setToUserName(message.getFromUserName());
@@ -241,27 +202,15 @@ public class WeixinController {
         reply.setCreateTime(new Date());
         reply.setContent(replyContent);
         reply.setFuncFlag(0);
-//        if (message.getContent().equals("图文")){
-//            reply.setMsgType(Reply.NEWS);
-//            List<Article> articleList = new ArrayList<>();
-//            Article article = new Article();
-//            article.setTitle("考试成绩");
-//            article.setDescription( student.getId()+ "班英语成绩");
-//            article.setPicUrl("http://localhost:8080/aixuexiao/assets/img/bg1.jpg");
-//            article.setUrl("http://localhost:8080/aixuexiao/changda/echats?classid=" + student.getId());
-//            articleList.add(article);
-//            reply.setArticleCount(articleList.size());
-//            reply.setArticles(articleList);
-//        }else {
-            reply.setMsgType(Reply.TEXT);
-//        }
-        weixinService.addReply(reply);//保存回复消息到数据库
+        reply.setMsgType(Reply.TEXT);
+        //保存回复消息到数据库
+        weixinService.addReply(reply);
         //将回复消息序列化为xml形式
-        MyLogger.info("序列化前: "+reply.getContent());
+//        MyLogger.info("序列化前: "+reply.getContent());
         back = WeixinUtil.replyToXml(reply);
 //        back = WeixinUtil.replyTextToXml(reply);
 //        back= MessageUtil.textMessageToXml(reply);
-        MyLogger.info("序列化后: "+back);
+        MyLogger.info("序列化后: " + back);
         return back;
     }
 

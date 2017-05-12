@@ -53,7 +53,7 @@ public class WeixinUtil {
                 protected void writeText(QuickWriter writer, String text) {
                     if (cdata) {
                         writer.write("<![CDATA[");
-                        MyLogger.info("添加标记: "+text);
+//                        MyLogger.info("添加标记: "+text);
                         writer.write(text);
                         writer.write("]]>");
                     } else {
